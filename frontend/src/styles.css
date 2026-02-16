@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f7f7ec;
+  --ink: #1f2421;
+  --card: #ffffffcc;
+  --line: #1f242124;
+  --accent: #ef6f39;
+  --accent-strong: #c85224;
+  --error: #a7341f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, #ffe6bf 0%, transparent 40%),
+    radial-gradient(circle at 80% 0%, #ffd5b0 0%, transparent 35%),
+    linear-gradient(180deg, #fff9ef 0%, var(--bg) 100%);
+}
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+.ambient-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 26px,
+    #00000005 26px,
+    #00000005 27px
+  );
+}
+
+.layout {
+  position: relative;
+  width: min(920px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1.2rem;
+  box-shadow: 0 10px 28px #0000000d;
+  backdrop-filter: blur(3px);
+  animation: rise 0.4s ease both;
+}
+
+.hero-card h1,
+.feed-card h2,
+.composer-card h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+}
+
+.hero-subtext,
+.muted-text {
+  margin: 0.6rem 0 0;
+  color: #33413b;
+}
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font: 500 0.75rem 'IBM Plex Mono', monospace;
+  color: #5f6f67;
+}
+
+.stack-form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #ef6f3933;
+  border-color: #ef6f39aa;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.65rem 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+button:hover:enabled {
+  transform: translateY(-1px);
+  background: var(--accent-strong);
+}
+
+button:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.ghost-btn {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.auth-mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.auth-mode-toggle button {
+  background: #1f24210d;
+  color: var(--ink);
+  border: 1px solid transparent;
+}
+
+.auth-mode-toggle button.active {
+  background: #fff;
+  border-color: var(--line);
+}
+
+.composer-header,
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.composer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.counter {
+  font: 500 0.8rem 'IBM Plex Mono', monospace;
+  color: #56635d;
+}
+
+.counter.low {
+  color: var(--error);
+}
+
+.thread-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.thread-item {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.85rem;
+  background: #ffffffcc;
+}
+
+.thread-item p {
+  margin: 0.5rem 0 0;
+}
+
+.thread-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.like-count {
+  color: #44524c;
+  font: 500 0.8rem 'IBM Plex Mono', monospace;
+}
+
+.like-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.thread-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: baseline;
+}
+
+.thread-topline span {
+  color: #687771;
+  font: 400 0.76rem 'IBM Plex Mono', monospace;
+}
+
+.error-text {
+  margin: 0;
+  color: var(--error);
+  font: 500 0.82rem 'IBM Plex Mono', monospace;
+}
+
+.status-card {
+  width: min(520px, 100%);
+  margin: 4rem auto;
+  text-align: center;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: 1rem 0.7rem 3rem;
+  }
+
+  .card {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  .composer-footer,
+  .thread-topline,
+  .thread-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
