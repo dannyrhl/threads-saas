@@ -17,20 +17,84 @@ model User {
 
   threads      Thread[]
   likes        Like[]
+  replies      Reply[]
+  replyLikes   ReplyLike[]
+  reposts      Repost[]
+  sentMessages DirectMessage[] @relation("DirectMessageSender")
+  receivedMessages DirectMessage[] @relation("DirectMessageRecipient")
+  following    Follow[]  @relation("UserFollowing")
+  followers    Follow[]  @relation("UserFollowers")
 }
 
 model Thread {
   id        Int      @id @default(autoincrement())
   content   String   @db.VarChar(280)
+  mediaUrl  String?  @db.Text
+  mediaType MediaType?
   authorId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   likes     Like[]
+  replies   Reply[]
+  reposts   Repost[]
 
   @@index([authorId])
   @@index([createdAt])
+}
+
+model Follow {
+  id          Int      @id @default(autoincrement())
+  followerId  Int
+  followingId Int
+  status      FollowStatus @default(pending)
+  respondedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@index([followingId, status])
+  @@index([followerId, status])
+}
+
+model Reply {
+  id            Int       @id @default(autoincrement())
+  content       String    @db.VarChar(280)
+  threadId      Int
+  authorId      Int
+  parentReplyId Int?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  thread        Thread    @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parentReply   Reply?    @relation("ReplyTree", fields: [parentReplyId], references: [id], onDelete: Cascade)
+  childReplies  Reply[]   @relation("ReplyTree")
+  likes         ReplyLike[]
+
+  @@index([threadId])
+  @@index([authorId])
+  @@index([parentReplyId])
+  @@index([createdAt])
+}
+
+model ReplyLike {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  replyId   Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reply     Reply    @relation(fields: [replyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, replyId])
+  @@index([userId])
+  @@index([replyId])
 }
 
 model Like {
@@ -45,4 +109,44 @@ model Like {
   @@unique([userId, threadId])
   @@index([userId])
   @@index([threadId])
+}
+
+model Repost {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  threadId  Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, threadId])
+  @@index([userId])
+  @@index([threadId])
+}
+
+model DirectMessage {
+  id          Int      @id @default(autoincrement())
+  senderId    Int
+  recipientId Int
+  content     String   @db.VarChar(1000)
+  createdAt   DateTime @default(now())
+
+  sender      User     @relation("DirectMessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("DirectMessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([recipientId])
+  @@index([createdAt])
+}
+
+enum MediaType {
+  photo
+  video
+}
+
+enum FollowStatus {
+  pending
+  accepted
+  rejected
 }

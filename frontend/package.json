@@ -6,13 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "native:sync": "npm run build && npx cap sync",
+    "native:android": "npm run native:sync && npx cap open android",
+    "native:ios": "npm run native:sync && npx cap open ios"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/ios": "^8.1.0",
     "vite": "^5.4.10"
   }
 }

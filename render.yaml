@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: threads-saas
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run prisma:generate && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d

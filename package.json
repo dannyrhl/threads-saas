@@ -4,6 +4,7 @@
   "description": "Node.js backend for a Threads-like SaaS app",
   "main": "src/server.js",
   "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "prisma:generate": "prisma generate",
